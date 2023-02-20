@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'css/styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src=  
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
+    </script>  
+    
+    <script src=  
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
+    </script>  
+    
+    <link href=  
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+        rel="stylesheet" type="text/css" />
+    <title>Document</title>
+</head>
+<body onload=display_ct();>
+    <nav>
+        <div class="billing-nav">
+            <div class="item"><a href="{%url 'AdminHome' %}">Dasboard</a> </div>
+            <div class="item"><a href="{%url 'MakeStock' %}">Stock Update</a></div>
+            <div class="item"><a href="{%url 'Billing' %}">Billing</a></div>
+            <div class="item"><a href="{%url 'TotalStock' %}">Stock</a> </div>
+            <div class="item"><a href="{%url 'SignOut' %}">Logout</a> </div>
+            <div class="item"><a href="{%url 'SignUpStaff' %}">Register Staff</a> </div>
+
+
+        </div>
+    </nav>
+    <div class="container-fluid time">
+        <div class="container">
+        <h6 id="date"></h6>
+        <h6 style="color: Green;">Welcome {{request.user}}</h6>
+        </div>
+    </div>
+    {% block content %}
+      
+    <div class="container mt-5">
+        {% for message in messages  %}
+            <h6 style="color:red">{{message}}</h6>
+                
+            {% endfor %}
+        <div class="details-container ">
+            <div class="items"><h5>Stock</h5><h2>{{stocktotal}}</h2></div>
+            <div class="items"><h5>Puchase</h5></div>
+            <div class="items"><h5>Total Sale</h5></div>
+            <div class="items"><h5>Cash Flow</h5></div>
+        </div>
+    </div>
+    {% endblock %}
+
+<div class="container-fluid bg-footer footer  mt-5">
+
+</div>
+    <script type="text/javascript"> 
+        function display_c(){
+        var refresh=1000; // Refresh rate in milli seconds
+        mytime=setTimeout('display_ct()',refresh)
+        }
+        
+        function display_ct() {
+        var x = new Date()
+        document.getElementById('date').innerHTML = x;
+        display_c();
+         }
+    </script>
+</body>
+</html>

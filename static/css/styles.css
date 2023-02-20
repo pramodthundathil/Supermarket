@@ -1,0 +1,53 @@
+.billing-nav{
+    width: 100%;
+    background-color: #34AD54;
+    color:white;
+    display: flex;
+}
+.item{
+    padding: 10px;
+    
+}
+.item a{
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+}
+.item a:hover{
+    text-decoration: underline;
+    color:aqua
+}
+.time{
+    border-bottom: .5px solid #34AD54;
+}
+.details-container{
+    display: flex;
+    justify-content: space-around;
+}
+.items{
+    width: 200px;
+    height: 100px;
+    border:1px solid rgb(23, 23, 92);
+    text-align: center;
+}
+.form-body{
+    border: 5px solid rgb(23, 23, 92);
+}
+.form-body input{
+    width:60%;
+    padding: 7px;
+    border: .5px solid rgb(23, 23, 92);
+}
+.form-body label{
+    display: block;
+}
+.form-body select{
+    width: 60%;
+    padding: 7px;
+    border: .5px solid rgb(23, 23, 92);
+}
+.footer{
+    height: 100px;
+    background-color: #34AD54;
+
+}

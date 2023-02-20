@@ -1,0 +1,29 @@
+{% extends 'Stock/adminhome.html' %}
+{% block content %}
+<div class="container text-center form-body mt-5">
+    <h1>Add Stock</h1>
+    {% for m in messages %}
+    <h6 style="color: green;">{{m}}</h6>
+    {% endfor %}
+
+    <div class="row mt-5">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="col-md-12">
+            {{field.label}}: <br>
+            {{field}}
+            </div>
+            {% endfor %}
+            <br><br>
+            <div class="col-md-12">
+                <button class="btn btn-warning" type="submit">Add Product</button>
+            </div>
+            <br><br>
+        </form>
+        
+        
+    </div>
+</div>
+   
+ {% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'Stock/adminhome.html' %}
+{% block content %}
+<div class="container text-center form-body mt-5">
+    <h4>Stock Details</h4><br>
+    {% for m in messages %}
+    <h6 style="color: green;">{{m}}</h6>
+    {% endfor %}
+    <table class="table table-striped">
+        <tr>
+            <th>Batch Code</th>
+            <th>Product Name</th>
+            <th>Unit Price</th>
+            <th>Stock</th>
+            <th>Expairy Date</th>
+            <th>Action</th>
+        </tr>
+        {% for item in stock %}
+          
+        <tr>
+            <td>{{item.Batch_Code}}</td>
+            <td>{{item.Product_Name}}</td>
+            <td>{{item.Product_unit_Price}}</td>
+            <td>{{item.Product_Stock}}</td>
+            <td>{{item.Expairy_Date}}</td>
+            <td>
+                <a href="{%url 'UpdateItem' item.id %}" class="btn btn-warning">Update</a>
+                <a href="{%url 'DeleteStock' item.id %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endblock %}
