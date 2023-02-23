@@ -35,14 +35,20 @@
 
         </div>
         <div class="col-4">
+            <form action="{%url 'ProceedToCheckOut' %}" method="post">
+                {% csrf_token %}
             <div class="container bg-success">
                 <h5 class="text-center text-bg-warning">Devlivery Details</h5>
+                {% for i in daddress  %}
+
+                  
                 <br>
-                <input type="text" class="form-control" placeholder="Name"><br>
-                <input type="number" class="form-control" placeholder="Phone Number"><br>
-                <input type="text" class="form-control" placeholder="House"><br>
-                <input type="text" class="form-control" placeholder="Area"><br>
-                <input type="text" class="form-control" placeholder="Land Mark"><br>
+                <input type="text" class="form-control" name="name" placeholder="Name" value="{{i.Name}}" required><br>
+                <input type="number" class="form-control" name="phone" placeholder="Phone Number" value="{{i.phone}}" required><br>
+                <input type="text" class="form-control" name="house" placeholder="House" value="{{i.house}}" required><br>
+                <input type="text" class="form-control" name="area" placeholder="Area" value="{{i.area}}" required><br>
+                <input type="text" class="form-control" name="lmark" placeholder="Land Mark" value="{{i.landmark}}" required><br>
+                {% endfor %}
         
                 <br>
                 <h4>-----------------------------------</h4>
@@ -55,9 +61,10 @@
                 <h4>-----------------------------------</h4>
                 <h2>Total Payable:</h2><h1>₹ {{total}}</h1>
                 <br><br>
-                <button class="btn btn-warning rounded-5">Proceed With Checkoout</button>
+                <button class="btn btn-warning rounded-5" type="submit">Proceed With Checkoout</button>
                 <br><br>
             </div>
+        </form>
         </div>
     </div>
 </div>

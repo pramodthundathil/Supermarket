@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from .forms import ProductAddForm
 from django.contrib import messages
 from .models import Products
-
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import ProductSerializer
 # Create your views here.
 def AdminHome(request):
     context= {
@@ -29,6 +31,12 @@ def TotalStock(request):
         "stock":stock
     }
     return render(request,"Stock/stock.html",context)
+
+@api_view(['GET'])
+def ApiProductData(request):
+    product = Products.objects.all()
+    serializer = ProductSerializer(product,many = True)
+    return Response(serializer.data)
 
 def DeleteStock(request,pk):
     item = Products.objects.get(id = pk)

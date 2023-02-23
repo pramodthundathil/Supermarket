@@ -3,7 +3,7 @@ from products.models import Products
 from .models import BillCalculations
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Cart
+from .models import Cart,CheckoutBill,DeliveryAddress
 
 # Create your views here.
 
@@ -54,13 +54,20 @@ def CartView(request):
     for item in cart:
         total += int(item.product.Product_unit_Price)
         tax += int(item.product.GST) 
+        
+    if DeliveryAddress.objects.filter(user = request.user).count() != 0:
+        daddress = DeliveryAddress.objects.filter(user = request.user)
+    else:
+        daddress = [{"Name":"nill"}]
+        
     
     context = {
         "cart":cart,
         "itemcount" : len(cart),
         "totalbeforetax":(total-tax),
         "total":total,
-        "tax":tax
+        "tax":tax,
+        "daddress":daddress
     }
     return render(request,"cart.html",context)
     
@@ -77,5 +84,39 @@ def DeleteCart(request,pk):
     cartitem = Cart.objects.get(id = pk)
     cartitem.delete()
     return redirect('CartView')
+
+@login_required(login_url="SignIn")
+def ProceedToCheckOut(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        phone = request.POST["phone"]
+        house = request.POST["house"]
+        area = request.POST["area"]
+        lmark = request.POST["lmark"]
+        
+        if DeliveryAddress.objects.filter(user = request.user).exists():
+            daddress = DeliveryAddress.objects.get(user = request.user)
+            daddress.Name = name
+            daddress.phone = phone
+            daddress.house = house
+            daddress.area = area
+            daddress.landmark = lmark
+            daddress.save()
+        else:
+            d = DeliveryAddress.objects.create(Name = name,phone = phone,house = house,area = area,landmark = lmark,user = request.user)
+        cart = Cart.objects.filter(customer = request.user)
+        for i in cart:
+            item = i.product
+            cbill = CheckoutBill.objects.create(product = item,customer = request.user)
+            cbill.save()
+            i.delete()
+        
+    return render(request,'confirmation.html')
+
+
+@login_required(login_url="SignIn")
+def MyOrders(request):
+    context = {'bill':CheckoutBill.objects.filter(customer = request.user)}
+    return render(request,"myorders.html",context)
     
 

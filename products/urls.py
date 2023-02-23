@@ -7,4 +7,5 @@ urlpatterns = [
     path("TotalStock",views.TotalStock,name='TotalStock'),
     path("DeleteStock/<int:pk>",views.DeleteStock,name="DeleteStock"),
     path("UpdateItem/<int:pk>",views.UpdateItem,name="UpdateItem"),
+    path("ApiProductData",views.ApiProductData,name="ApiProductData")
 ]

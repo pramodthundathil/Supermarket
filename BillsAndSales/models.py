@@ -18,3 +18,20 @@ class Cart(models.Model):
     customer = models.ForeignKey(User,on_delete=models.CASCADE)
     itemcount = models.CharField(max_length=255)
     
+class CheckoutBill(models.Model):
+    
+    product = models.ForeignKey(Products,on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    customer = models.ForeignKey(User,on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    
+class DeliveryAddress(models.Model):
+    
+    Name = models.CharField(max_length=255)
+    phone = models.IntegerField()
+    house = models.CharField(max_length=255)
+    area = models.CharField(max_length=255)
+    landmark = models.CharField(max_length=255)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)    
+    
+    

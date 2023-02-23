@@ -74,7 +74,7 @@
             <div class="navbar-nav mx-auto py-0">
                 <a href="{%url 'Index' %}" class="nav-item nav-link active">Home</a>
                 <a href="#" class="nav-item nav-link">About</a>
-                <a href="#pro" class="nav-item nav-link">Product</a>
+                <a href="{%url 'MyOrders' %}" class="nav-item nav-link">My Orders</a>
                 <a href="{%url 'CartView' %}" class="nav-item nav-link">Cart <i class="bi bi-cart text-white"></i></a>
                 {% if request.user.is_authenticated %}
                 <div class="nav-item dropdown">
