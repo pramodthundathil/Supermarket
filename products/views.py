@@ -1,14 +1,17 @@
 from django.shortcuts import render,redirect
-from .forms import ProductAddForm
+from .forms import ProductAddForm,Venderaddfrom
 from django.contrib import messages
-from .models import Products
+from .models import Products,Venders
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import ProductSerializer
+from BillsAndSales.models import BillId
 # Create your views here.
 def AdminHome(request):
     context= {
-        "stocktotal": Products.objects.all().count()
+        "stocktotal": Products.objects.all().count(),
+        "TotalSale": BillId.objects.all().count(),
+        'venders':len(Venders.objects.all())
     }
     return render(request,"Stock/adminhome.html",context)
 
@@ -48,4 +51,24 @@ def UpdateItem(request,pk):
     item = Products.objects.get(id =pk)
     messages.info(request," {} is not Possible to Update Now. Please delete the item and try to add a new item".format(item))
     return redirect("TotalStock")
+
+def VenderPage(request):
+    form  = Venderaddfrom()
+    ven = Venders.objects.all()
+    if request.method == "POST":
+        form = Venderaddfrom(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request,"Vender Added success")
+            return redirect('VenderPage')
+    context = {
+        "form":form,
+        "ven":ven
+    }
+    return render(request,"Stock/venderadd.html",context)
+
+def DeleteVender(request,pk):
+    Venders.objects.get(id = pk).delete()
+    messages.info(request,"Vender Deleted")
+    return redirect('VenderPage')
     

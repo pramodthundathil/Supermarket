@@ -1,0 +1,33 @@
+{% extends 'Stock/adminhome.html' %}
+{% block content %}
+<style>
+    .billcontainer{
+        width:300px;
+        height: auto;
+        margin: auto;
+        border: .5px solid black;
+}
+h3{
+    text-align: center;
+}
+</style>
+
+<div class="container mt-5">
+    <div class="billcontainer">
+        <h3 >Fram Fresh Bill</h3>
+        items:
+        
+        {% for i in bills  %}
+        <p>{{i.product.Product_Name}}: <strong>{{i.product.Product_unit_Price}}</strong></p>
+
+
+            
+        {% endfor %}
+        <h4>Total: {{Billid.totalprice}}</h4>
+
+            
+
+    </div>
+</div>
+
+{% endblock %}

@@ -85,3 +85,14 @@ def SignOut(request):
     logout(request)
     return redirect('Index')
 
+def SearchProducts(request):
+    if request.method == "POST":
+        search = request.POST["search"]
+        products = Products.objects.filter(Product_Name__contains = search)
+        
+        return render(request, "search.html",{"search":search,"products":products})
+    else:
+        return render(request, "search.html")
+        
+        
+

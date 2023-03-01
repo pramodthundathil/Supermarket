@@ -3,14 +3,14 @@ from products.models import Products
 from .models import BillCalculations
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Cart,CheckoutBill,DeliveryAddress
+from .models import Cart,CheckoutBill,DeliveryAddress, BillId,SaleBill
 
 # Create your views here.
 
 @login_required(login_url="SignIn")
 def Billing(request):
     product = Products.objects.all()
-    bill = BillCalculations.objects.all()
+    bill = BillCalculations.objects.filter(user = request.user)
     total = 0
     for item in bill:
         total += int(item.product.Product_unit_Price)
@@ -27,12 +27,12 @@ def AddBill(request):
     bach = request.POST['pbatch']
     if Products.objects.filter(Product_Name = item).exists():
         product = Products.objects.get(Product_Name = item)
-        bill = BillCalculations.objects.create(product = product,quantity = '1')
+        bill = BillCalculations.objects.create(product = product,quantity = '1',user = request.user)
         bill.save()
         return redirect("Billing")
     elif Products.objects.filter(Batch_Code = bach).exists():
         product = Products.objects.get(Batch_Code = bach)
-        bill = BillCalculations.objects.create(product = product,quantity = '1')
+        bill = BillCalculations.objects.create(product = product,quantity = '1',user = request.user)
         bill.save()
         return redirect("Billing")
     else:
@@ -42,8 +42,22 @@ def AddBill(request):
 
 @login_required(login_url="SignIn")
 def MakeSale(request):
-    Bill = BillCalculations.objects.all()
-    Bill.delete()
+    if request.method == "POST":
+        Billitems = BillCalculations.objects.all()
+        bill = BillCalculations.objects.filter(user = request.user)
+        total = 0
+        for item in bill:
+            total += int(item.product.Product_unit_Price)
+            
+        billid = BillId.objects.create(itemquantity = len(Billitems),totalprice = total,user = request.user)
+        billid.save()
+        for i in Billitems:
+            product = i.product
+            sale = SaleBill.objects.create(product = product,user = request.user, Billid = billid)
+            sale.save()
+        Bill = BillCalculations.objects.all()
+        Bill.delete()
+        return redirect('Billing')
     return redirect('Billing')
 
 @login_required(login_url="SignIn")
@@ -118,5 +132,37 @@ def ProceedToCheckOut(request):
 def MyOrders(request):
     context = {'bill':CheckoutBill.objects.filter(customer = request.user)}
     return render(request,"myorders.html",context)
+
+def BillsView(request):
+    bills = BillId.objects.all()
+    context = {
+        "bills":bills,
+    }
+    return render(request,"Stock/billsview.html",context)
+
+def deletebill(request,pk):
+    bills = BillId.objects.get(id = pk)
+    if SaleBill.objects.filter(Billid = bills).exists():
+        sbill = SaleBill.objects.filter(Billid = bills)
+        for i in sbill:
+            i.delete()
+        bills.delete()
+        messages.info(request,"All Bill Items Deleted")
+    else:
+        bills.delete()
+        messages.info(request,"Bill Items Deleted")
+        
+    return redirect('BillsView')
+
+def ViewBill(request,pk):
+    billid = BillId.objects.get(id = pk)
+    bills = SaleBill.objects.filter(Billid = billid)
+    context = {
+        "bills":bills,
+        "Billid":billid
+    }
+    return render(request,"Stock/billview.html",context)
+        
+    
     
 

@@ -60,7 +60,10 @@
 
 
     </table>
-    <a class="btn btn-primary" href="{%url 'MakeSale' %}">Make Sale</a>
+    <form action="{%url 'MakeSale' %}" method="post">
+        {% csrf_token %}
+    <button class="btn btn-primary" type="submit">Make Sale</button>
+    </form>
 
 </div>
 

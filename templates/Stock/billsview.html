@@ -1,0 +1,36 @@
+{% extends 'Stock/adminhome.html' %}
+{% block content %}
+<div class="container">
+    
+    {% for m in messages  %}
+        <h5 style="color:red;text-align:center">{{m}}</h5>
+    {% endfor %}
+        
+    <table class="table">
+        <tr>
+            <th>Bill Id</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Items</th>
+            <th>User</th>
+            <th>View</th>
+            <th>Delete</th>
+
+        </tr>
+        
+        {% for b in bills %}
+        <tr>
+            <td>{{b.id}}</td>
+            <td>{{b.date}}</td>
+            <td>{{b.totalprice}}</td>
+            <th>{{b.itemquantity}}</th>
+            <td>{{b.user.first_name}}</td>
+            <td><a href="{%url 'ViewBill' b.id %}" class="btn btn-info">View Bill</a></td>
+            <td><a href="{%url 'deletebill' b.id%}" class="btn btn-outline-danger btn-small">Delete</a></td>
+        </tr>
+            
+        {% endfor %}
+            
+    </table>
+</div>
+{% endblock %}

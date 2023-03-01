@@ -6,5 +6,7 @@ urlpatterns = [
     path("SignIn",views.SignIn,name="SignIn"),
     path("SignUp",views.SignUp,name="SignUp"),
     path("SignUpStaff",views.SignUpStaff,name="SignUpStaff"),
-    path("SignOut",views.SignOut,name="SignOut")
+    path("SignOut",views.SignOut,name="SignOut"),
+    path("SearchProducts",views.SearchProducts,name="SearchProducts"),
+    
 ]

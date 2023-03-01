@@ -93,6 +93,11 @@
                 </div>
                 {% endif %}
             </div>
+            <form class="d-flex" method="post" action="{%url 'SearchProducts'%}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" name="search" placeholder="Search">
+                <button class="btn btn-outline-info" type="submit">Search</button>
+              </form>
         </div>
     </nav>
     <!-- Navbar End -->
@@ -139,6 +144,8 @@
     </div>
     <!-- Carousel End -->
 
+    
+
 
     <!-- Banner Start -->
     <div class="container-fluid banner mb-5">
@@ -162,6 +169,79 @@
         </div>
     </div>
     <!-- Banner Start -->
+
+    <!-- Products Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                <h6 class="text-primary text-uppercase" id="pro">Products</h6>
+                <h1 class="display-5">Our Products</h1>
+            </div>
+            <div class="owl-carousel product-carousel px-5" style="background-color:#34AD54 !important;">
+                
+                {% for item in products %}     
+                <div class="pb-5 mt-5" >
+                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
+                        <img class="img-fluid mb-4 mt-2" src="{{item.product_Image.url}}" alt="" style="height: 200px !important;">
+                        <h6 class="mb-3">{{item.Product_Name}}</h6>
+                        <h5 class="text-primary mb-0">₹{{item.Product_unit_Price}}</h5>
+                        <div class="btn-action d-flex justify-content-center">
+                            <a class="btn bg-primary py-2 px-3" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-white"></i></a>
+                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- <div class="pb-5">
+                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
+                        <img class="img-fluid mb-4" src="{%static 'img/product-2.png' %}" alt="">
+                        <h6 class="mb-3">Organic Vegetable</h6>
+                        <h5 class="text-primary mb-0">$19.00</h5>
+                        <div class="btn-action d-flex justify-content-center">
+                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
+                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-5">
+                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
+                        <img class="img-fluid mb-4" src="img/product-1.png" alt="">
+                        <h6 class="mb-3">Organic Vegetable</h6>
+                        <h5 class="text-primary mb-0">$19.00</h5>
+                        <div class="btn-action d-flex justify-content-center">
+                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
+                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-5">
+                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
+                        <img class="img-fluid mb-4" src="img/product-2.png" alt="">
+                        <h6 class="mb-3">Organic Vegetable</h6>
+                        <h5 class="text-primary mb-0">$19.00</h5>
+                        <div class="btn-action d-flex justify-content-center">
+                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
+                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-5">
+                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
+                        <img class="img-fluid mb-4" src="img/product-1.png" alt="">
+                        <h6 class="mb-3">Organic Vegetable</h6>
+                        <h5 class="text-primary mb-0">$19.00</h5>
+                        <div class="btn-action d-flex justify-content-center">
+                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
+                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- Products End -->
+
 
 
     <!-- About Start -->
@@ -253,7 +333,7 @@
     
 
     <!-- Services Start -->
-    <div class="container-fluid py-5">
+    <!-- <div class="container-fluid py-5">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-4 col-md-6">
@@ -301,8 +381,432 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Services End -->
+
+
+
+    
+
+
+    <h1 class="display-5 mt-5 text-center" >Order Items Online</h1>
+    <div class="container-fluid mt-5 mb-5">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
+              role="tab" aria-controls="home-tab-pane" aria-selected="true">All Products</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
+              role="tab" aria-controls="profile-tab-pane" aria-selected="false">FreshGoods</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button"
+              role="tab" aria-controls="contact-tab-pane" aria-selected="false">Groceries</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="Provi-tab" data-bs-toggle="tab" data-bs-target="#Provi-tab-pane" type="button"
+              role="tab" aria-controls="Provi-tab-pane" aria-selected="false">Provision</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="Cosmetics-tab" data-bs-toggle="tab" data-bs-target="#Cosmetics-tab-pane" type="button"
+              role="tab" aria-controls="Cosmetics-tab-pane" aria-selected="false">Cosmetics</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="Beverages-tab" data-bs-toggle="tab" data-bs-target="#Beverages-tab-pane" type="button"
+              role="tab" aria-controls="Beverages-tab-pane" aria-selected="false">Beverages</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="Bakeries-tab" data-bs-toggle="tab" data-bs-target="#Bakeries-tab-pane" type="button"
+              role="tab" aria-controls="Bakeries-tab-pane" aria-selected="false">Bakeries</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="Other-tab" data-bs-toggle="tab" data-bs-target="#Other-tab-pane" type="button"
+              role="tab" aria-controls="Other-tab-pane" aria-selected="false">Other Porducts</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">All Products
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        <h6 class="text-primary text-uppercase">FreshGoods
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "FreshGoods" %}
+                            
+                            
+                            
+                            
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>>
+          </div>
+          <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">Groceries
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "Groceries" %}
+                            
+                            
+                            
+                            
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="Provi-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">Provision
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "Provision" %}
+                                 
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="Cosmetics-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">Cosmetics
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "Cosmetics" %}
+                                 
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="Beverages-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">Beverages
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "Beverages" %}
+                                 
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="Bakeries-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">Bakeries
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "Bakeries" %}
+                                 
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="Other-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="container-fluid py-5">
+                <div class="container">
+                    <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+                        
+                        <!-- <h1 class="display-5">Order Items Online</h1> -->
+                        <h6 class="text-primary text-uppercase">Other Products
+                        </h6>
+                    </div>
+                    <div class="row g-5">
+                        
+                        {% for item in products  %}
+        
+                        
+                        {% if item.Product_category == "Other" %}
+                                 
+                        <div class="col-lg-4 col-md-6">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <div class="position-relative">
+                                <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
+                                <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
+                                        <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
+                                            <h4 class="text-white">{{item.Product_Name}}</h4>
+                                            <h6>{{item.Product_Brand}}</h6>
+                                            <span class="text-white">₹{{item.Product_unit_Price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
+                                        <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
+                                        <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
+                                        <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% endfor %}
+        
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
 
 
     <!-- Features Start -->
@@ -357,123 +861,8 @@
     <!-- Features Start -->
 
 
-    <!-- Products Start -->
-    <div class="container-fluid py-5">
-        <div class="container">
-            <div class="mx-auto text-center mb-5" style="max-width: 500px;">
-                <h6 class="text-primary text-uppercase" id="pro">Products</h6>
-                <h1 class="display-5">Our Products</h1>
-            </div>
-            <div class="owl-carousel product-carousel px-5" style="background-color:#34AD54 !important;">
-                
-                {% for item in products %}     
-                <div class="pb-5 mt-5" >
-                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
-                        <img class="img-fluid mb-4 mt-2" src="{{item.product_Image.url}}" alt="" style="height: 200px !important;">
-                        <h6 class="mb-3">{{item.Product_Name}}</h6>
-                        <h5 class="text-primary mb-0">₹{{item.Product_unit_Price}}</h5>
-                        <div class="btn-action d-flex justify-content-center">
-                            <a class="btn bg-primary py-2 px-3" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-white"></i></a>
-                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <!-- <div class="pb-5">
-                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
-                        <img class="img-fluid mb-4" src="{%static 'img/product-2.png' %}" alt="">
-                        <h6 class="mb-3">Organic Vegetable</h6>
-                        <h5 class="text-primary mb-0">$19.00</h5>
-                        <div class="btn-action d-flex justify-content-center">
-                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
-                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pb-5">
-                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
-                        <img class="img-fluid mb-4" src="img/product-1.png" alt="">
-                        <h6 class="mb-3">Organic Vegetable</h6>
-                        <h5 class="text-primary mb-0">$19.00</h5>
-                        <div class="btn-action d-flex justify-content-center">
-                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
-                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pb-5">
-                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
-                        <img class="img-fluid mb-4" src="img/product-2.png" alt="">
-                        <h6 class="mb-3">Organic Vegetable</h6>
-                        <h5 class="text-primary mb-0">$19.00</h5>
-                        <div class="btn-action d-flex justify-content-center">
-                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
-                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pb-5">
-                    <div class="product-item position-relative bg-white d-flex flex-column text-center">
-                        <img class="img-fluid mb-4" src="img/product-1.png" alt="">
-                        <h6 class="mb-3">Organic Vegetable</h6>
-                        <h5 class="text-primary mb-0">$19.00</h5>
-                        <div class="btn-action d-flex justify-content-center">
-                            <a class="btn bg-primary py-2 px-3" href=""><i class="bi bi-cart text-white"></i></a>
-                            <a class="btn bg-secondary py-2 px-3" href=""><i class="bi bi-eye text-white"></i></a>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
-        </div>
-    </div>
-    <!-- Products End -->
-
-
     
 
-    <!-- Team Start -->
-    <div class="container-fluid py-5">
-        <div class="container">
-            <div class="mx-auto text-center mb-5" style="max-width: 500px;">
-                <h6 class="text-primary text-uppercase">Product Catogary
-                </h6>
-                <h1 class="display-5">Order Items Online</h1>
-            </div>
-            <div class="row g-5">
-                
-                {% for item in products  %}
-                    
-                    
-                <div class="col-lg-4 col-md-6">
-                    <div class="row g-0">
-                        <div class="col-10">
-                            <div class="position-relative">
-                        <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt="" style="height: 400px !important;">
-                        <!-- <img class="img-fluid w-100" src="{{item.product_Image.url}}" alt=""> -->
-                                <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(52, 173, 84, .85);">
-                                    <h4 class="text-white">{{item.Product_Name}}</h4>
-                                    <h6>{{item.Product_Brand}}</h6>
-                                    <span class="text-white">₹{{item.Product_unit_Price}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
-                                <a class="btn btn-square rounded-circle bg-white" href="{%url 'CartAdd' item.id %}"><i class="bi bi-cart text-secondary"></i></a>
-                                <a class="btn btn-square rounded-circle bg-white" href="#"><i class="bi bi-eye text-secondary"></i></a>
-                                <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a> -->
-                                <!-- <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-instagram text-secondary"></i></a> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
 
 
     <!-- Blog Start -->

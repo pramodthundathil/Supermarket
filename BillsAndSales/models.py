@@ -10,6 +10,7 @@ class BillCalculations(models.Model):
     quantity = models.CharField(max_length=11)
     gst = models.CharField(max_length=100,null=True)
     totalprice = models.CharField(max_length=100,null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     
 class Cart(models.Model):
     
@@ -32,6 +33,18 @@ class DeliveryAddress(models.Model):
     house = models.CharField(max_length=255)
     area = models.CharField(max_length=255)
     landmark = models.CharField(max_length=255)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)    
+    user = models.ForeignKey(User,on_delete=models.CASCADE)  
+    
+class BillId(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    itemquantity = models.CharField(max_length=255)
+    totalprice = models.CharField(max_length=255)
+    user = models.ForeignKey(User,on_delete=models.CASCADE) 
+    status = models.BooleanField(default=True)
+    
+class SaleBill(models.Model):
+    product = models.ForeignKey(Products,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE) 
+    Billid = models.ForeignKey(BillId,on_delete=models.CASCADE)  
     
     
