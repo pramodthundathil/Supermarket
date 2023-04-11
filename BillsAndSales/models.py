@@ -18,6 +18,7 @@ class Cart(models.Model):
     date = models.DateField(auto_now=True)
     customer = models.ForeignKey(User,on_delete=models.CASCADE)
     itemcount = models.CharField(max_length=255)
+    price = models.FloatField(null=True)
     
 class CheckoutBill(models.Model):
     

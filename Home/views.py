@@ -93,6 +93,13 @@ def SearchProducts(request):
         return render(request, "search.html",{"search":search,"products":products})
     else:
         return render(request, "search.html")
+    
+def ProductSingleview(request,pk):
+    product = Products.objects.get(id = pk)
+    context = {
+        "product":product
+    }
+    return render(request,"productsingleview.html",context)
         
         
 

@@ -1,0 +1,55 @@
+{% extends "index.html" %}
+{% block content %}
+<style>
+    .itemcontainer {
+        width: 90%;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid green;
+    }
+</style>
+<div class="container mt-5">
+    <div class="productcontainer">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="itemcomtainer">
+                    <table class="table">
+                        <tr>
+                            <th>Product:</th>
+                            <th>{{product.Product_Name}}</th>
+                        </tr>
+                        <tr>
+                            <td>Price:</td>
+                            <th>{{product.Product_unit_Price}}</th>
+                        </tr>
+                        <tr>
+                            <td>Brand</td>
+                            <th>{{product.Product_Brand}}</th>
+                        </tr>
+                        <tr>
+                            <td>Stock</td>
+                            <th>{{product.Product_Stock}}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">
+                            <a class="btn bg-info" href="{%url 'CartAdd' product.id %}"><i class="bi bi-cart text-white"></i>Add To Cart</a>
+
+                            </th>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="itemcomtainer">
+                    <img src="{{product.product_Image.url}}" style="width:80%" alt="">
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+  
+{% endblock %}

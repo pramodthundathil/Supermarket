@@ -8,5 +8,6 @@ urlpatterns = [
     path("SignUpStaff",views.SignUpStaff,name="SignUpStaff"),
     path("SignOut",views.SignOut,name="SignOut"),
     path("SearchProducts",views.SearchProducts,name="SearchProducts"),
+    path("ProductSingleview/<int:pk>",views.ProductSingleview,name="ProductSingleview")
     
 ]

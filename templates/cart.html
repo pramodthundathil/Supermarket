@@ -16,6 +16,7 @@
                     <th>Item Brand</th>
                     <th>Item Price</th>
                     <th>GST</th>
+                    <th>Number Of items</th>
                     <th>Item Image</th>
                     <th>Remove</th>
                 </tr>
@@ -24,8 +25,9 @@
                 <tr>
                     <td>{{item.product.Product_Name}}</td>
                     <td>{{item.product.Product_Brand}}</td>
-                    <td>{{item.product.Product_unit_Price}}</td>
+                    <td>{{item.price}}</td>
                     <td>{{item.product.GST}}</td>
+                    <td>{{item.itemcount}}</td>
                     <td><img src="{{item.product.product_Image.url}}" alt="" style="width:50px;height:auto;"></td>
                     <td><a class="btn btn-danger" href="{%url 'DeleteCart' item.id %}">X</a></td>
                 </tr>

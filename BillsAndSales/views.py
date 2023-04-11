@@ -66,7 +66,7 @@ def CartView(request):
     total = 0
     tax = 0
     for item in cart:
-        total += int(item.product.Product_unit_Price)
+        total += int(item.price)
         tax += int(item.product.GST) 
         
     if DeliveryAddress.objects.filter(user = request.user).count() != 0:
@@ -88,8 +88,15 @@ def CartView(request):
 @login_required(login_url="SignIn")
 def CartAdd(request,pk):
     item = Products.objects.get(id = pk)
-    cart = Cart.objects.create(product = item,customer = request.user,itemcount = "1")
-    cart.save()
+    if Cart.objects.filter(product = item).exists():
+        cartitem = Cart.objects.get(product = item)
+        cartitem.itemcount = str(int(cartitem.itemcount) + 1)
+        cartitem.price = float(cartitem.price) + float(item.Product_unit_Price)
+        cartitem.save()
+        
+    else:
+        cart = Cart.objects.create(product = item,customer = request.user,itemcount = "1",price = float(item.Product_unit_Price))
+        cart.save()
     return redirect('CartView')
 
 
@@ -123,6 +130,14 @@ def ProceedToCheckOut(request):
             item = i.product
             cbill = CheckoutBill.objects.create(product = item,customer = request.user)
             cbill.save()
+            stocklist = item.Product_Stock.split(" ")
+            try:
+                item.Product_Stock = str(float(stocklist[0])-float(i.itemcount)) + stocklist[1]
+                item.save()
+            except:
+                item.Product_Stock = str(float(stocklist[0])-float(i.itemcount))
+                item.save
+                
             i.delete()
         
     return render(request,'confirmation.html')
